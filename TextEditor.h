@@ -325,7 +325,6 @@ private:
 
 	std::string GetText(const Coordinates& aStart, const Coordinates& aEnd) const;
 	std::string GetClipboardText() const;
-	std::string GetSelectedText(int aCursor = -1) const;
 
 	void SetCursorPosition(const Coordinates& aPosition, int aCursor = -1, bool aClearSelection = true);
 
@@ -350,9 +349,6 @@ private:
 	void Delete(bool aWordMode = false, const EditorState* aEditorState = nullptr);
 
 	void SetSelection(Coordinates aStart, Coordinates aEnd, int aCursor = -1);
-	void SetSelection(int aStartLine, int aStartChar, int aEndLine, int aEndChar, int aCursor = -1);
-    Coordinates GetSelectionStart(int aCursor = -1) const;
-    Coordinates GetSelectionEnd(int aCursor = -1) const;
 
 	void SelectNextOccurrenceOf(const char* aText, int aTextSize, int aCursor = -1, bool aCaseSensitive = true);
 	void AddCursorForNextOccurrence(bool aCaseSensitive = true);
@@ -466,6 +462,12 @@ private:
 	static const std::unordered_map<char, char> OPEN_TO_CLOSE_CHAR;
 	static const std::unordered_map<char, char> CLOSE_TO_OPEN_CHAR;
 	static PaletteId defaultPalette;
+
+public:
+    void SetSelection(int aStartLine, int aStartChar, int aEndLine, int aEndChar, int aCursor = -1);
+    Coordinates GetSelectionStart(int aCursor = -1) const;
+    Coordinates GetSelectionEnd(int aCursor = -1) const;
+    std::string GetSelectedText(int aCursor = -1) const;
 
 private:
     struct RegexList;

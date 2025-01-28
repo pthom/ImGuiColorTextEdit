@@ -351,6 +351,8 @@ private:
 
 	void SetSelection(Coordinates aStart, Coordinates aEnd, int aCursor = -1);
 	void SetSelection(int aStartLine, int aStartChar, int aEndLine, int aEndChar, int aCursor = -1);
+    Coordinates GetSelectionStart(int aCursor = -1) const;
+    Coordinates GetSelectionEnd(int aCursor = -1) const;
 
 	void SelectNextOccurrenceOf(const char* aText, int aTextSize, int aCursor = -1, bool aCaseSensitive = true);
 	void AddCursorForNextOccurrence(bool aCaseSensitive = true);

@@ -24,6 +24,11 @@ TextEditor::TextEditor()
 {
 	SetPalette(defaultPalette);
 	mLines.push_back(Line());
+#ifdef IMGUI_BUNDLE_BUILD_PYTHON
+    SetLanguageDefinition(LanguageDefinitionId::Python);
+#else
+    SetLanguageDefinition(LanguageDefinitionId::Cpp);
+#endif
 }
 
 TextEditor::~TextEditor()

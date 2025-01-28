@@ -1171,6 +1171,21 @@ void TextEditor::SetSelection(int aStartLine, int aStartChar, int aEndLine, int 
 	SetSelection(startCoords, endCoords, aCursor);
 }
 
+TextEditor::Coordinates TextEditor::GetSelectionStart(int aCursor) const
+{
+    if (aCursor == -1)
+        aCursor = mState.mCurrentCursor;
+    return mState.mCursors[aCursor].GetSelectionStart();
+}
+
+TextEditor::Coordinates TextEditor::GetSelectionEnd(int aCursor) const
+
+{
+    if (aCursor == -1)
+        aCursor = mState.mCurrentCursor;
+    return mState.mCursors[aCursor].GetSelectionEnd();
+}
+
 void TextEditor::SelectNextOccurrenceOf(const char* aText, int aTextSize, int aCursor, bool aCaseSensitive)
 {
 	if (aCursor == -1)

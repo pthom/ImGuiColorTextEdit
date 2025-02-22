@@ -43,6 +43,14 @@ TextEditor::~TextEditor()
 void TextEditor::SetPalette(PaletteId aValue)
 {
 	mPaletteId = aValue;
+
+	// [Bundle:DelayedInit]
+	// This is a workaround to allow the TextEditor to be constructed
+	// even if the ImGui context is not yet initialized
+	// (We will call SetPalette at each call to Render)
+	if (ImGui::GetCurrentContext() == nullptr)
+		return;
+
 	const Palette* palletteBase;
 	switch (mPaletteId)
 	{
@@ -2264,6 +2272,9 @@ void TextEditor::UpdateViewVariables(float aScrollX, float aScrollY)
 
 void TextEditor::Render(bool aParentIsFocused)
 {
+	// [Bundle:DelayedInit]
+	SetPalette(mPaletteId);
+
 	/* Compute mCharAdvance regarding to scaled font size (Ctrl + mouse wheel)*/
 	const float fontWidth = ImGui::GetFont()->CalcTextSizeA(ImGui::GetFontSize(), FLT_MAX, -1.0f, "#", nullptr, nullptr).x;
 	const float fontHeight = ImGui::GetTextLineHeightWithSpacing();

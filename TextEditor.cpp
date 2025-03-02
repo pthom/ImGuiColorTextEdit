@@ -352,7 +352,7 @@ void TextEditor::Redo(int aSteps)
 		mUndoBuffer[mUndoIndex++].Redo(this);
 }
 
-void TextEditor::SetText(const std::string& aText)
+void TextEditor::SetText(const std::string& aText, bool ScrollToTop)
 {
 	mLines.clear();
 	mLines.emplace_back(Line());
@@ -369,7 +369,7 @@ void TextEditor::SetText(const std::string& aText)
 		}
 	}
 
-	mScrollToTop = true;
+	mScrollToTop = ScrollToTop;
 
 	mUndoBuffer.clear();
 	mUndoIndex = 0;

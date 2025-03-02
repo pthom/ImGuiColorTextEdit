@@ -87,7 +87,7 @@ public:
 	inline bool CanRedo() const { return !mReadOnly && mUndoIndex < (int)mUndoBuffer.size(); };
 	inline int GetUndoIndex() const { return mUndoIndex; };
 
-	void SetText(const std::string& aText);
+	void SetText(const std::string& aText, bool ScrollToTop=true);
 	std::string GetText() const;
 
 	void SetTextLines(const std::vector<std::string>& aLines);

@@ -15,6 +15,12 @@
 #define IMGUI_DEFINE_MATH_OPERATORS
 #include "imgui.h" // for imGui::GetCurrentWindow()
 
+//  char_isspace: isspace wrapper which is safe to use with char
+//  (isspace is UB if its input is not representable as unsigned char)
+bool char_isspace(char ch)
+{
+	return std::isspace(static_cast<unsigned char>(ch));
+}
 
 struct TextEditor::RegexList {
     std::vector<std::pair<boost::regex, TextEditor::PaletteIndex>> mValue;
@@ -1694,12 +1700,12 @@ TextEditor::Coordinates TextEditor::FindWordStart(const Coordinates& aFrom) cons
 		charIndex--;
 
 	bool initialIsWordChar = CharIsWordChar(line[charIndex].mChar);
-	bool initialIsSpace = isspace(line[charIndex].mChar);
+	bool initialIsSpace = char_isspace(line[charIndex].mChar);
 	char initialChar = line[charIndex].mChar;
 	while (Move(lineIndex, charIndex, true, true))
 	{
 		bool isWordChar = CharIsWordChar(line[charIndex].mChar);
-		bool isSpace = isspace(line[charIndex].mChar);
+		bool isSpace = char_isspace(line[charIndex].mChar);
 		if (initialIsSpace && !isSpace ||
 			initialIsWordChar && !isWordChar ||
 			!initialIsWordChar && !initialIsSpace && initialChar != line[charIndex].mChar)
@@ -1724,14 +1730,14 @@ TextEditor::Coordinates TextEditor::FindWordEnd(const Coordinates& aFrom) const
 		return aFrom;
 
 	bool initialIsWordChar = CharIsWordChar(line[charIndex].mChar);
-	bool initialIsSpace = isspace(line[charIndex].mChar);
+	bool initialIsSpace = char_isspace(line[charIndex].mChar);
 	char initialChar = line[charIndex].mChar;
 	while (Move(lineIndex, charIndex, false, true))
 	{
 		if (charIndex == line.size())
 			break;
 		bool isWordChar = CharIsWordChar(line[charIndex].mChar);
-		bool isSpace = isspace(line[charIndex].mChar);
+		bool isSpace = char_isspace(line[charIndex].mChar);
 		if (initialIsSpace && !isSpace ||
 			initialIsWordChar && !isWordChar ||
 			!initialIsWordChar && !initialIsSpace && initialChar != line[charIndex].mChar)
@@ -2754,7 +2760,7 @@ void TextEditor::ColorizeInternal()
 				auto& g = line[currentIndex];
 				auto c = g.mChar;
 
-				if (c != mLanguageDefinition->mPreprocChar && !isspace(c))
+				if (c != mLanguageDefinition->mPreprocChar && !char_isspace(c))
 					firstChar = false;
 
 				if (currentIndex == (int)line.size() - 1 && line[line.size() - 1].mChar == '\\')

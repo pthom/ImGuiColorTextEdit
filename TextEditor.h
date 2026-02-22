@@ -436,6 +436,7 @@ private:
 	float mContentHeight = 0.0f;
 	float mScrollX = 0.0f;
 	float mScrollY = 0.0f;
+	ImVec2 mLastRenderOrigin = ImVec2(0.0f, 0.0f); // screen origin captured during Render
 	bool mPanning = false;
 	bool mDraggingSelection = false;
 	ImVec2 mLastMousePos;
@@ -468,6 +469,7 @@ public:
     Coordinates GetSelectionStart(int aCursor = -1) const;
     Coordinates GetSelectionEnd(int aCursor = -1) const;
     std::string GetSelectedText(int aCursor = -1) const;
+    std::string GetWordAtScreenPos(const ImVec2& aScreenPos) const;
 
 private:
     struct RegexList;

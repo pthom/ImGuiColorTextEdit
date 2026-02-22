@@ -453,6 +453,7 @@ bool TextEditor::Render(const char* aTitle, bool aParentIsFocused, const ImVec2&
 	ImGui::BeginChild(aTitle, aSize, aBorder, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoNavInputs);
 
 	bool isFocused = ImGui::IsWindowFocused();
+	mLastRenderOrigin = ImGui::GetCursorScreenPos();
 	HandleKeyboardInputs(aParentIsFocused);
 	HandleMouseInputs();
 	ColorizeInternal();
@@ -699,6 +700,23 @@ std::string TextEditor::GetSelectedText(int aCursor) const
 		aCursor = mState.mCurrentCursor;
 
 	return GetText(mState.mCursors[aCursor].GetSelectionStart(), mState.mCursors[aCursor].GetSelectionEnd());
+}
+
+std::string TextEditor::GetWordAtScreenPos(const ImVec2& aScreenPos) const
+{
+	// Convert screen position to coordinates using the origin saved during last Render
+	// (ScreenPosToCoordinates uses GetCursorScreenPos() which is only valid inside the child window).
+	ImVec2 local(aScreenPos.x - mLastRenderOrigin.x + 3.0f, aScreenPos.y - mLastRenderOrigin.y);
+	Coordinates coords;
+	coords.mLine = Max(0, (int)floor(local.y / mCharAdvance.y));
+	coords.mColumn = Max(0, (int)floor((local.x - mTextStart + POS_TO_COORDS_COLUMN_OFFSET * mCharAdvance.x) / mCharAdvance.x));
+	coords = SanitizeCoordinates(coords);
+
+	auto start = FindWordStart(coords);
+	auto end = FindWordEnd(coords);
+	if (!(start < end))
+		return std::string();
+	return GetText(start, end);
 }
 
 void TextEditor::SetCursorPosition(const Coordinates& aPosition, int aCursor, bool aClearSelection)

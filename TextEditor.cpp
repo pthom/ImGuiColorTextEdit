@@ -2903,7 +2903,7 @@ const TextEditor::Palette& TextEditor::GetDarkPalette()
 			0x3696a2ff, // Comment (multi line)
 			0x282c34ff, // Background
 			0xe0e0e0ff, // Cursor
-			0x2060a080, // Selection
+			0x3875c8ff, // Selection
 			0xff200080, // ErrorMarker
 			0xffffff15, // ControlCharacter
 			0x0080f040, // Breakpoint

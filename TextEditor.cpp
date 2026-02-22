@@ -643,7 +643,9 @@ void TextEditor::UndoRecord::Redo(TextEditor* aEditor)
 
 std::string TextEditor::GetText(const Coordinates& aStart, const Coordinates& aEnd) const
 {
-	assert(aStart < aEnd);
+	assert(aStart <= aEnd);
+	if (aStart == aEnd)
+		return std::string();
 
 	std::string result;
 	auto lstart = aStart.mLine;
@@ -714,8 +716,6 @@ std::string TextEditor::GetWordAtScreenPos(const ImVec2& aScreenPos) const
 
 	auto start = FindWordStart(coords);
 	auto end = FindWordEnd(coords);
-	if (!(start < end))
-		return std::string();
 	return GetText(start, end);
 }
 

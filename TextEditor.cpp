@@ -2342,13 +2342,7 @@ void TextEditor::Render(bool aParentIsFocused)
 						mPalette[(int)PaletteIndex::Selection]);
 			}
 
-			// Draw line number (right aligned)
-			if (mShowLineNumbers)
-			{
-				snprintf(lineNumberBuffer, 16, "%d  ", lineNo + 1);
-				float lineNoWidth = ImGui::GetFont()->CalcTextSizeA(ImGui::GetFontSize(), FLT_MAX, -1.0f, lineNumberBuffer, nullptr, nullptr).x;
-				drawList->AddText(ImVec2(lineStartScreenPos.x + mTextStart - lineNoWidth, lineStartScreenPos.y), mPalette[(int)PaletteIndex::LineNumber], lineNumberBuffer);
-			}
+			// Line numbers are drawn after the main loop as a fixed gutter overlay (see below)
 
 			std::vector<Coordinates> cursorCoordsInThisLine;
 			for (int c = 0; c <= mState.mCurrentCursor; c++)
@@ -2450,6 +2444,32 @@ void TextEditor::Render(bool aParentIsFocused)
 				}
 
 				MoveCharIndexAndColumn(lineNo, charIndex, column);
+			}
+		}
+
+		// Draw gutter (line numbers) at fixed screen position - immune to horizontal scroll
+		if (mShowLineNumbers)
+		{
+			float gutterX = cursorScreenPos.x + mScrollX; // compensate for scroll
+
+			// Background rect covers any code text that scrolled into the gutter area
+			float topY = cursorScreenPos.y + mFirstVisibleLine * mCharAdvance.y;
+			float bottomY = cursorScreenPos.y + std::min(mLastVisibleLine + 1, (int)mLines.size()) * mCharAdvance.y;
+			drawList->AddRectFilled(
+				ImVec2(gutterX, topY),
+				ImVec2(gutterX + mTextStart, bottomY),
+				mPalette[(int)PaletteIndex::Background]);
+
+			// Draw line numbers right-aligned within the gutter
+			for (int lineNo = mFirstVisibleLine; lineNo <= mLastVisibleLine && lineNo < (int)mLines.size(); lineNo++)
+			{
+				float lineY = cursorScreenPos.y + lineNo * mCharAdvance.y;
+				snprintf(lineNumberBuffer, 16, "%d  ", lineNo + 1);
+				float lineNoWidth = ImGui::GetFont()->CalcTextSizeA(ImGui::GetFontSize(), FLT_MAX, -1.0f, lineNumberBuffer, nullptr, nullptr).x;
+				drawList->AddText(
+					ImVec2(gutterX + mTextStart - lineNoWidth, lineY),
+					mPalette[(int)PaletteIndex::LineNumber],
+					lineNumberBuffer);
 			}
 		}
 	}

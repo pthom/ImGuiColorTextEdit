@@ -1,18 +1,28 @@
-# About this fork
-You can use https://github.com/santaclose/ste as a demo.
+# About this fork of ImGuiColorTextEdit
 
-Feel free to join my [discord server](https://discord.gg/H7paVYPUUA) if you want to discuss anything about this fork.
+This version is integrated inside [Dear ImGui Bundle](https://github.com/pthom/imgui_bundle) as the standard Text and code editor.
 
-Features I've been working on:
-- multicursor (ctrl + click to add a new one)
-- ctrl + d for selecting next match
-- ctrl + \[ and ctrl + \] for indentation
-- more language definitions for syntax highlighting
-- switched to boost regex which seems more stable
-- ctrl + backspace and ctrl + delete for word mode delete
-- ctrl + / for comment toggling
-- it works without setting a language definition
-- middle mouse button for panning
+This is a fork of [ImGuiColorTextEdit](https://github.com/BalazsJako/ImGuiColorTextEdit), with some patches applied.
+
+Main differences:
+- integrates most of the changes from [santaclose fork](https://github.com/santaclose/ImGuiColorTextEdit):
+  - multicursor (ctrl + click to add a new one)
+  - ctrl + d for selecting next match
+  - ctrl + \[ and ctrl + \] for indentation
+  - more language definitions for syntax highlighting
+  - switched to boost regex which seems more stable
+  - ctrl + backspace and ctrl + delete for word mode delete
+  - ctrl + / for comment toggling
+  - it works without setting a language definition
+  - middle mouse button for panning
+
+- add some changes for Dear ImGui Bundle:
+  * Lines numbers always visible (displayed in a separate gutter)
+  * Add GetWordAtScreenPos() to retrieve word under a screen position
+  * allow construct TextEditor before ImGui context
+  * GetSelectedText, Get/SetSelection are public, Add GetSelectionStart/End
+
+
 
 # ImGuiColorTextEdit
 Syntax highlighting text editor for ImGui

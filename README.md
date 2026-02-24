@@ -1,3 +1,5 @@
+This master branch is unused and may be out of sync. Consider checking out the [imgui_bundle branch](https://github.com/pthom/ImGuiColorTextEdit/tree/imgui_bundle).
+
 # ImGuiColorTextEdit
 Syntax highlighting text editor for ImGui
 

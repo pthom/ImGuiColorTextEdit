@@ -97,6 +97,19 @@ public:
 	void ImGuiDebugPanel(const std::string& panelName = "Debug");
 	void UnitTests();
 
+	//
+	// Additions to @santclose fork below
+	//
+	std::string GetWordAtScreenPos(const ImVec2& aScreenPos) const;
+	std::string GetSelectedText(int aCursor = -1) const;
+	// TextPosition and SelectionPosition are only used for the public API (private impl uses Coordinates)
+	struct TextPosition { int line = -1; int column = -1; };
+	struct SelectionPosition { TextPosition start; TextPosition end; };
+	void SetSelectionPosition(const SelectionPosition& pos);
+	SelectionPosition GetSelectionPosition(int aCursor = -1) const;
+	TextPosition GetCursorPosition() const;
+
+
 private:
 	// ------------- Generic utils ------------- //
 
@@ -349,6 +362,9 @@ private:
 	void Delete(bool aWordMode = false, const EditorState* aEditorState = nullptr);
 
 	void SetSelection(Coordinates aStart, Coordinates aEnd, int aCursor = -1);
+	void SetSelection(int aStartLine, int aStartChar, int aEndLine, int aEndChar, int aCursor = -1);
+    Coordinates GetSelectionStart(int aCursor = -1) const;
+    Coordinates GetSelectionEnd(int aCursor = -1) const;
 
 	void SelectNextOccurrenceOf(const char* aText, int aTextSize, int aCursor = -1, bool aCaseSensitive = true);
 	void AddCursorForNextOccurrence(bool aCaseSensitive = true);
@@ -463,14 +479,6 @@ private:
 	static const std::unordered_map<char, char> OPEN_TO_CLOSE_CHAR;
 	static const std::unordered_map<char, char> CLOSE_TO_OPEN_CHAR;
 	static PaletteId defaultPalette;
-
-public:
-    void SetSelection(int aStartLine, int aStartChar, int aEndLine, int aEndChar, int aCursor = -1);
-    Coordinates GetSelectionStart(int aCursor = -1) const;
-    Coordinates GetSelectionEnd(int aCursor = -1) const;
-    std::string GetSelectedText(int aCursor = -1) const;
-    std::string GetWordAtScreenPos(const ImVec2& aScreenPos) const;
-
 private:
     struct RegexList;
     std::shared_ptr<RegexList> mRegexList;

@@ -704,6 +704,30 @@ std::string TextEditor::GetSelectedText(int aCursor) const
 	return GetText(mState.mCursors[aCursor].GetSelectionStart(), mState.mCursors[aCursor].GetSelectionEnd());
 }
 
+void TextEditor::SetSelectionPosition(const TextEditor::SelectionPosition& pos)
+{
+	SetSelection(pos.start.line, pos.start.column, pos.end.line, pos.end.column);
+}
+TextEditor::TextPosition TextEditor::GetCursorPosition() const
+{
+	Coordinates pos = GetSanitizedCursorCoordinates();
+	TextPosition result;
+	result.line = pos.mLine;
+	result.column = pos.mColumn;
+	return result;
+}
+
+
+TextEditor::SelectionPosition TextEditor::GetSelectionPosition(int aCursor) const
+{
+	SelectionPosition pos;
+	pos.start.line = GetSelectionStart(aCursor).mLine;
+	pos.start.column = GetSelectionStart(aCursor).mColumn;
+	pos.end.line = GetSelectionEnd(aCursor).mLine;
+	pos.end.column = GetSelectionEnd(aCursor).mColumn;
+	return pos;
+}
+
 std::string TextEditor::GetWordAtScreenPos(const ImVec2& aScreenPos) const
 {
 	// Convert screen position to coordinates using the origin saved during last Render

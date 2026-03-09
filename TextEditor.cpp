@@ -4757,7 +4757,7 @@ bool TextEditor::Autocomplete::render(Document& document, Cursors& cursors, cons
 				}
 
 			} else {
-				ImGui::TextUnformatted("No suggestions");
+				ImGui::TextUnformatted(configuration.noSuggestionsLabel.c_str());
 			}
 		}
 

@@ -114,4 +114,59 @@ poor-man's solution, more sophisticated solutions probably required external
 language engines/services that are beyond the scope of this editor. With the
 provided API however, connections to external capabilities can be established
 and context-sensitive suggestions can be provided based on the most advanced
-algorithms (even good-old AI slop :-)
+algorithms (even good-old AI slop :-).
+
+Below is a quick snippet that shows how to use the Trie class to implement
+a poor-man's autocomplete without using a language server. This snippet
+was taken from the [example application](../example/) so can see it in
+context.
+
+```c++
+void Editor::setAutocompleteMode(bool flag) {
+	// see we are turning autocomplete on or off
+	if (flag) {
+		// rebuild word list
+		buildAutocompleteTrie();
+
+		// setup autocomplete by submitting a new configuration
+		TextEditor::AutoCompleteConfig config;
+
+		config.callback = [this](TextEditor::AutoCompleteState& state) {
+			trie.findSuggestions(state.suggestions, state.searchTerm);
+		};
+
+		editor.SetAutoCompleteConfig(&config);
+
+		// enable change tracking
+		// we don't track every keystroke, callbacks can be delayed up to 3000 milliseconds
+		// if you want live tracking, change 3000 to 0 (performance hit will be minimal for small documents)
+		editor.SetChangeCallback([this]() {
+			buildAutocompleteTrie();
+		}, 3000);
+
+	} else {
+		// disable autocomplete and change tracking
+		editor.SetAutoCompleteConfig(nullptr);
+		editor.SetChangeCallback(nullptr);
+	}
+}
+
+void Editor::buildAutocompleteTrie() {
+	// empty list first
+	trie.clear();
+
+	// add language words (if required)
+	auto language = editor.GetLanguage();
+
+	if (language) {
+		for (auto& word : language->keywords) { trie.insert(word); }
+		for (auto& word : language->declarations) { trie.insert(word); }
+		for (auto& word : language->identifiers) { trie.insert(word); }
+	}
+
+	// add all identifiers in current document
+	editor.IterateIdentifiers([this](const std::string& identifier) {
+		trie.insert(identifier);
+	});
+}
+```

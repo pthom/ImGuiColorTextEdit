@@ -682,11 +682,12 @@ void Editor::renderConfirmError() {
 //
 
 void Editor::setAutocompleteMode(bool flag) {
+	// see we are turning autocomplete on or off
 	if (flag) {
 		// rebuild word list
 		buildAutocompleteTrie();
 
-		// enable autocomplete
+		// setup autocomplete by submitting a new configuration
 		TextEditor::AutoCompleteConfig config;
 
 		config.callback = [this](TextEditor::AutoCompleteState& state) {
@@ -696,11 +697,11 @@ void Editor::setAutocompleteMode(bool flag) {
 		editor.SetAutoCompleteConfig(&config);
 
 		// enable change tracking
-		// (we don't track every keystroke, callbacks can be delayed up to 3000 milliseconds)
+		// we don't track every keystroke, callbacks can be delayed up to 3000 milliseconds
+		// if you want live tracking, change the 3000 to 0 (performance hit will be minimal for small documents)
 		editor.SetChangeCallback([this]() {
 			buildAutocompleteTrie();
 		}, 3000);
-
 
 	} else {
 		// disable autocomplete and change tracking
@@ -715,7 +716,7 @@ void Editor::setAutocompleteMode(bool flag) {
 //
 
 void Editor::buildAutocompleteTrie() {
-	// rebuild autocomplete word list
+	// empty list first
 	trie.clear();
 
 	// add language words (if required)
@@ -727,7 +728,7 @@ void Editor::buildAutocompleteTrie() {
 		for (auto& word : language->identifiers) { trie.insert(word); }
 	}
 
-	// add all identifiers in document
+	// add all identifiers in current document
 	editor.IterateIdentifiers([this](const std::string& identifier) {
 		trie.insert(identifier);
 	});

@@ -6245,7 +6245,7 @@ bool TextEditor::CodePoint::isWhiteSpace(ImWchar codepoint) {
 
 bool TextEditor::CodePoint::isWord(ImWchar codepoint) {
 	if (codepoint < 0x7f) {
-		return (static_cast<unsigned>((codepoint | 32) - 'a') < 26) || (static_cast<unsigned>(codepoint - '0') < 10);
+		return (static_cast<unsigned>((codepoint | 32) - 'a') < 26) || (static_cast<unsigned>(codepoint - '0') < 10) || codepoint == '_';
 
 #if defined(IMGUI_USE_WCHAR32)
 	} else if (codepoint >= 0x10000) {

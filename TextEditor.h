@@ -26,6 +26,9 @@
 
 #include "imgui.h"
 
+// [Bundle] IMGUI_BUNDLE_PYTHON_UNSUPPORTED_API is always defined,
+// but is used as a marker to exclude certain sections from the python bindings generation.
+#define IMGUI_BUNDLE_PYTHON_UNSUPPORTED_API
 
 //
 //	TextEditor
@@ -141,14 +144,18 @@ public:
 	inline bool CurrentCursorHasSelection() const { return cursors.currentCursorHasSelection(); }
 	inline void ClearCursors() { cursors.clearAll(); }
 
-	// get cursor positions (the meaning of main and current is explained in README.md)
 	inline size_t GetNumberOfCursors() const { return cursors.size(); }
+
+	#ifdef IMGUI_BUNDLE_PYTHON_UNSUPPORTED_API
+	// get cursor positions (the meaning of main and current is explained in README.md)
 	inline void GetCursor(int& line, int& column, size_t cursor) const { return getCursor(line, column, cursor); }
 	inline void GetCursor(int& startLine, int& startColumn, int& endLine, int& endColumn, size_t cursor) const { return getCursor(startLine, startColumn, endLine, endColumn, cursor); }
 	inline void GetMainCursor(int& line, int& column) const { return getCursor(line, column, cursors.getMainIndex()); }
 	inline void GetCurrentCursor(int& line, int& column) const { return getCursor(line, column, cursors.getCurrentIndex()); }
+#endif // #ifdef IMGUI_BUNDLE_PYTHON_UNSUPPORTED_API
 
 	// alternative API for cursor and selection position using lightweight out struct (line and column are zero-based)
+	// (the meaning of main and current is explained in README.md)
 	struct CursorPosition { int line = 0; int column = 0; };
 	struct CursorSelection { CursorPosition start; CursorPosition end; };
 	inline CursorPosition GetMainCursorPosition() const { CursorPosition p; getCursor(p.line, p.column, cursors.getMainIndex()); return p; }
@@ -248,6 +255,7 @@ public:
 	// passing nullptr deactivates the callback
 	inline void SetTransactionCallback(std::function<void(std::vector<Change>&)> callback) { transactionCallback = callback; }
 
+#ifdef IMGUI_BUNDLE_PYTHON_UNSUPPORTED_API
 	// line-based callbacks (line numbers are zero-based)
 	// insertor callback is called when for each line inserted and the result is used as the new line specific user data
 	// deletor callback is called for each line deleted (line specific user data is passed to callback)
@@ -265,6 +273,7 @@ public:
 	inline void SetUserData(int line, void* data) { document.setUserData(line, data); }
 	inline void* GetUserData(int line) const { return document.getUserData(line); }
 	inline void IterateUserData(std::function<void(int line, void* data)> callback) const { document.iterateUserData(callback); }
+#endif // IMGUI_BUNDLE_PYTHON_UNSUPPORTED_API
 
 	// line-based decoration
 	struct Decorator {
@@ -401,6 +410,7 @@ public:
 		// name of the language
 		std::string name;
 
+#ifdef IMGUI_BUNDLE_PYTHON_UNSUPPORTED_API
 		// flag to describe if keywords and identifiers are case sensitive (which is the default)
 		bool caseSensitive = true;
 
@@ -451,6 +461,7 @@ public:
 		// function to implement custom tokenizer
 		// if a token is found, function should return an iterator to the character after the token and set the color
 		std::function<Iterator(Iterator start, Iterator end, Color& color)> customTokenizer;
+#endif // #ifdef IMGUI_BUNDLE_PYTHON_UNSUPPORTED_API
 
 		// predefined language definitions
 		static const Language* C();
@@ -474,6 +485,7 @@ public:
 	// iterate through identifiers detected by the colorizer (based on current language)
 	inline void IterateIdentifiers(std::function<void(const std::string& identifier)> callback) const { document.iterateIdentifiers(callback); }
 
+#ifdef IMGUI_BUNDLE_PYTHON_UNSUPPORTED_API
 	// autocomplete state (acts as API between editor and outer application)
 	class AutoCompleteState {
 	public:
@@ -732,6 +744,7 @@ protected:
 		int line = 0;
 		int column = 0;
 	};
+#endif // #ifdef IMGUI_BUNDLE_PYTHON_UNSUPPORTED_API
 
 	// a single cursor
 	class Cursor {

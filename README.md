@@ -11,9 +11,24 @@
 ![Maintained](https://img.shields.io/maintenance/yes/2026?style=for-the-badge)
 ![Version](https://img.shields.io/badge/version-0.9-blue?style=for-the-badge)
 
-# Colorizing Text Editor and Text Diff for Dear ImGui
-
 </div>
+
+---
+
+# About this fork
+
+The imgui_bundle branch of this fork is used in [Dear ImGui Bundle](https://github.com/pthom/imgui_bundle).
+
+It is based on the most maintained fork of the original ImGuiColorTextEdit repository which is available at
+https://github.com/goossens/ImGuiColorTextEdit. 
+
+Very small adaptations are made to make it work with Python bindings (preprocessor guards for unbindable APIs, and a few convenience structs like `CursorPosition`/`CursorSelection`). 
+
+Many thanks to @goossens for providing a well-designed rewrite of ImGuiColorTextEdit!
+
+---
+
+# Colorizing Text Editor and Text Diff for Dear ImGui
 
 TextEdit is a syntax highlighting text editor for
 [Dear ImGui](https://github.com/ocornut/imgui) and it was originally developed by

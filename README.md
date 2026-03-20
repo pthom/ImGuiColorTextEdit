@@ -11,9 +11,23 @@
 ![Maintained](https://img.shields.io/maintenance/yes/2026?style=for-the-badge)
 ![Version](https://img.shields.io/badge/version-0.9-blue?style=for-the-badge)
 
+</div>
+
+---
+
+# About this fork
+
+The imgui_bundle branch of this fork is used in [Dear ImGui Bundle](https://github.com/pthom/imgui_bundle).
+The master branch of this fork is now a copy of https://github.com/goossens/ImGuiColorTextEdit (minus this edit in Readme).
+
+https://github.com/goossens/ImGuiColorTextEdit is the most maintained fork of the original ImGuiColorTextEdit repository. 
+
+Many thanks to @goossens for providing a well-designed rewrite of ImGuiColorTextEdit!
+
+---
+
 # Colorizing Text Editor and Text Diff for Dear ImGui
 
-</div>
 
 TextEdit is a syntax highlighting text editor for
 [Dear ImGui](https://github.com/ocornut/imgui) and it was originally developed by

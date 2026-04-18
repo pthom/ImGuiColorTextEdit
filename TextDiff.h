@@ -32,7 +32,7 @@ public:
 	void SetText(const std::string_view& left, const std::string_view& right);
 
 	// specify a new language
-	void SetLanguage(const Language* l);
+	void SetLanguage(const TextEditor::Language* l);
 
 	// specify the background color for added/deleted lines
 	inline void SetColors(ImU32 ac, ImU32 dc) { addedColor = ac; deletedColor = dc; }
@@ -48,7 +48,7 @@ public:
 	inline void AddMarker(int /* line */, ImU32 /* lineNumberColor */, ImU32 /* textColor */, const std::string_view& /* lineNumberTooltip */, const std::string_view& /* textTooltip */) {}
 	inline void ClearMarkers() {}
 
-	inline void SetLineDecorator(float /* width */, std::function<void(Decorator& decorator)> /* callback */) {}
+	inline void SetLineDecorator(float /* width */, std::function<void(TextEditor::Decorator& decorator)> /* callback */) {}
 	inline void ClearLineDecorator() {}
 
 	inline void SetLineNumberContextMenuCallback(std::function<void(int line)> /* callback */) {}

@@ -32,7 +32,7 @@ public:
 	void SetText(const std::string_view& left, const std::string_view& right);
 
 	// specify a new language
-	void SetLanguage(const Language* l);
+	void SetLanguage(const TextEditor::Language* l);
 
 	// specify the background color for added/deleted lines
 	inline void SetColors(ImU32 ac, ImU32 dc) { addedColor = ac; deletedColor = dc; }

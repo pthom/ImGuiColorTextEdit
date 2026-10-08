@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master
+      - imgui_bundle  # Dear ImGui Bundle's branch
+  workflow_dispatch:
 
 jobs:
   verify-windows:
